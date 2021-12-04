@@ -1,2 +1,2 @@
 @echo off
-fastboot getvar all
+fastboot getvar all 2> f.txt

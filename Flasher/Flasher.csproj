@@ -35,9 +35,8 @@
     <ApplicationIcon>R_2.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AndroidLib, Version=1.5.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Desktop\AndroidLib.dll</HintPath>
+    <Reference Include="AndroidLib">
+      <HintPath>.\AndroidLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

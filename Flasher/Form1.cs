@@ -47,7 +47,7 @@ namespace Flasher
                 int i = 0;
                 while ((line = r.ReadLine()) != null)
                 {
-                    if(line.Contains("flash"))
+                    if(line.Contains("flash") && !line.Contains("NONE"))
                     {                       
                         string[] ls = line.Split('|');
                         string sf=ls[0].Replace(" %* "," ");
@@ -84,22 +84,22 @@ namespace Flasher
                 switch (device.State.ToString())
                 {
                     case "FASTBOOT":
-                        if (File.Exists(Directory.GetCurrentDirectory() + "\\f.txt"))
+                        if (File.Exists(@"C:\Users\" + Environment.UserName + @"\Local\Temp\RegawMOD\AndroidLib\f.txt"))
                         {
-                            File.Delete(Directory.GetCurrentDirectory() + "\\f.txt");
+                            File.Delete(@"C:\Users\" + Environment.UserName + @"\Appdata\Local\Temp\RegawMOD\AndroidLib\f.txt");
                         }
-                        File.WriteAllText(Directory.GetCurrentDirectory() + "\\fb.cmd", Properties.Resources.fb);                        
+                        File.WriteAllText(@"C:\Users\"+Environment.UserName+ @"\Appdata\Local\Temp\RegawMOD\AndroidLib\fb.cmd", Properties.Resources.fb);                        
                         Process fd=new Process();
                         fd.StartInfo.FileName = "cmd.exe";
-                        fd.StartInfo.Arguments = "/c fb.cmd 2> f.txt";
+                        fd.StartInfo.Arguments = "/c fb.cmd";
                         fd.StartInfo.UseShellExecute = false;
                         fd.StartInfo.CreateNoWindow = true;
-                        fd.StartInfo.WorkingDirectory = Directory.GetCurrentDirectory();
+                        fd.StartInfo.WorkingDirectory = @"C:\Users\"+Environment.UserName+ @"\Appdata\Local\Temp\RegawMOD\AndroidLib";
                         fd.StartInfo.RedirectStandardOutput = true;
                         fd.Start();
                         fd.WaitForExit();                                               
-                        File.Delete(Directory.GetCurrentDirectory() + "\\fb.cmd");
-                        using (StreamReader r = new StreamReader(Directory.GetCurrentDirectory() + "\\f.txt"))
+                        File.Delete(@"C:\Users\" + Environment.UserName + @"\Appdata\Local\Temp\RegawMOD\AndroidLib\fb.cmd");
+                        using (StreamReader r = new StreamReader(@"C:\Users\" + Environment.UserName + @"\Appdata\Local\Temp\RegawMOD\AndroidLib\f.txt"))
                         {
                             string line;
                             int i = 0;
@@ -134,8 +134,12 @@ namespace Flasher
                                     line = line.Replace("(bootloader) ", " ").TrimStart();
                                     string[] pd = line.Split(':');
                                     richTextBox2.AppendText(Environment.NewLine + pd[0]+" : ", Color.Yellow);
-                                    richTextBox2.AppendText(pd[1].TrimStart().TrimEnd() + Environment.NewLine, Color.LimeGreen);
-                                    pdn = pd[1].TrimStart().TrimEnd();
+                                    richTextBox2.AppendText(pd[1].TrimStart().TrimEnd(), Color.LimeGreen);
+                                    string slc = pd[1].TrimStart().TrimEnd();
+                                    if (!slc.Contains("0"))
+                                    {
+                                        checkBox2.Checked = true;
+                                    }
                                 }
                                 i++;                               
                             }                            
@@ -170,6 +174,7 @@ namespace Flasher
                     Fastboot.ExecuteFastbootCommandNoReturn(Fastboot.FormFastbootCommand(argsp[0],"\""+textBox1.Text+"\\"+argsp[1]+"\\"+argsp[2]+"\""));                 
                     richTextBox2.AppendText("Done",Color.LimeGreen);                    
                     richTextBox2.ScrollToCaret();
+                    checkedListBox1.SetItemChecked(i,false);
                 }
                 i++;
             }
@@ -193,7 +198,7 @@ namespace Flasher
                 }
                 richTextBox2.AppendText("Done", Color.Green);
             }
-            richTextBox2.AppendText(Environment.NewLine+"Developed By :",Color.Yellow);
+            richTextBox2.AppendText(Environment.NewLine+Environment.NewLine+"Developed By :",Color.Yellow);
             richTextBox2.AppendText("Kyaw Khant Zaw", Color.LimeGreen);
             this.Cursor = Cursors.Default;            
         }
@@ -256,10 +261,11 @@ namespace Flasher
                             if (blu)
                             {
                                 this.Text = "Fastboot Flasher (Flashing : Don't touch me)";
-                                FBFlash();
-                                DialogResult d = MessageBox.Show("Operation Done!" + Environment.NewLine + "Do you want to reboot?", "Alert", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
+                                FBFlash();                                
+                                DialogResult d = MessageBox.Show("Operation Done!" + Environment.NewLine + "Do you want to reboot?", "Alert", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);                                
                                 if (d == DialogResult.Yes)
                                 {
+                                    
                                     device.FastbootReboot();
                                 }
                                 this.Text = "Fastboot Flasher";
