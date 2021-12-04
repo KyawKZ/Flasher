@@ -47,7 +47,7 @@ namespace Flasher
                 int i = 0;
                 while ((line = r.ReadLine()) != null)
                 {
-                    if(line.Contains("flash"))
+                    if(line.Contains("flash") && !line.Contains("NONE"))
                     {                       
                         string[] ls = line.Split('|');
                         string sf=ls[0].Replace(" %* "," ");
