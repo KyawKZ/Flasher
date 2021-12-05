@@ -61,34 +61,42 @@ namespace Flasher.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ::[Bat To Exe Converter]
-        ///::
-        ///::YAwzoRdxOk+EWAnk
-        ///::fBw5plQjdG8=
-        ///::YAwzuBVtJxjWCl3EqQJgSA==
-        ///::ZR4luwNxJguZRRnk
-        ///::Yhs/ulQjdF+5
-        ///::cxAkpRVqdFKZSDk=
-        ///::cBs/ulQjdF+5
-        ///::ZR41oxFsdFKZSDk=
-        ///::eBoioBt6dFKZSDk=
-        ///::cRo6pxp7LAbNWATEpCI=
-        ///::egkzugNsPRvcWATEpCI=
-        ///::dAsiuh18IRvcCxnZtBJQ
-        ///::cRYluBh/LU+EWAnk
-        ///::YxY4rhs+aU+JeA==
-        ///::cxY6rQJ7JhzQF1fEqQJQ
-        ///::ZQ05rAF9IBncCkqN+0xwdVs0
-        ///::ZQ05rAF9IAHYFVzEqQJQ
-        ///::eg0/rx1wNQPfEVWB+kM9LVsJDGQ=
-        ///::fBEirQZwNQPfEVWB+kM9LVsJDGQ=
-        ///::cRolqwZ3JBvQF1fEqQJQ
-        ///::dhA7uBVwLU+EWDk=
-        ///::YQ03rBFz [rest of string was truncated]&quot;;.
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] AndroidLib {
+            get {
+                object obj = ResourceManager.GetObject("AndroidLib", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to @echo off
+        ///fastboot getvar all 2&gt; f.txt.
         /// </summary>
         internal static string fb {
             get {
                 return ResourceManager.GetString("fb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to @echo off
+        ///sfk.exe replace NON-HLOS.bin -binary &quot;/43415244415050/4D415244415050/&quot; -dump -yes.
+        /// </summary>
+        internal static string run {
+            get {
+                return ResourceManager.GetString("run", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] sfk {
+            get {
+                object obj = ResourceManager.GetObject("sfk", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }

@@ -16,8 +16,7 @@ namespace Flasher
     {
         public string args;
         AndroidController android = AndroidController.Instance;
-        bool blu;
-        string pdn;
+        bool blu;        
         public Form1()
         {
             InitializeComponent();            
@@ -35,42 +34,55 @@ namespace Flasher
             checkBox1.Checked = false;            
             richTextBox2.AppendText("Developed By : ",Color.Yellow);
             richTextBox2.AppendText("Kyaw Khant Zaw",Color.LimeGreen);
+            if (!File.Exists(Directory.GetCurrentDirectory() + "\\AndroidLib.dll"))
+            {
+                File.WriteAllBytes(Directory.GetCurrentDirectory() + "\\AndroidLib.dll", Properties.Resources.AndroidLib);
+            }
         }
 
         private void ParseFlashBat()
         {
             richTextBox2.Clear();
             checkedListBox1.Items.Clear();
-            using (StreamReader r = new StreamReader(textBox1.Text+"\\flash_all.bat"))
+            if (textBox1.Text.Contains("images"))
             {
-                string line;
-                int i = 0;
-                while ((line = r.ReadLine()) != null)
+                using (StreamReader r = new StreamReader(textBox1.Text + "\\flash_all.bat"))
                 {
-                    if(line.Contains("flash") && !line.Contains("NONE"))
-                    {                       
-                        string[] ls = line.Split('|');
-                        string sf=ls[0].Replace(" %* "," ");
-                        string fs = sf.Replace(" %~dp0"," ");
-                        string l = fs.Replace("fastboot ", " ");
-                        string fn = l.TrimStart();
-                        fn = fn.Replace("images","=");
-                        if (fn.Contains(":"))
+                    string line;
+                    int i = 0;
+                    while ((line = r.ReadLine()) != null)
+                    {
+                        if (line.Contains("flash") && !line.Contains("NONE"))
                         {
-                            fn = fn.Replace(":", " ");
-                            fn = fn.TrimStart();
+                            string[] ls = line.Split('|');
+                            string sf = ls[0].Replace(" %* ", " ");
+                            string fs = sf.Replace(" %~dp0", " ");
+                            string l = fs.Replace("fastboot ", " ");
+                            string fn = l.TrimStart();
+                            fn = fn.Replace("images", "=");
+                            if (fn.Contains(":"))
+                            {
+                                fn = fn.Replace(":", " ");
+                                fn = fn.TrimStart();
+                            }
+                            if (fn.Contains("\\"))
+                            {
+                                fn = fn.Replace("\\", " ");
+                            }
+                            string[] final = fn.Split('=');
+                            string cmd = final[0].TrimStart().TrimEnd() + " \\images\\" + final[1].TrimStart().TrimEnd();
+                            checkedListBox1.Items.Add(cmd);
+                            checkedListBox1.SetItemChecked(i, true);
+                            i++;
                         }
-                        if (fn.Contains("\\"))
-                        {
-                            fn = fn.Replace("\\", " ");
-                        }
-                        string[] final = fn.Split('=');
-                        string cmd = final[0].TrimStart().TrimEnd()+" \\images\\"+final[1].TrimStart().TrimEnd();                                           
-                        checkedListBox1.Items.Add(cmd);
-                        checkedListBox1.SetItemChecked(i, true);
-                        i++;
-                    }                    
+                    }
                 }
+            }
+            else
+            {
+                MessageBox.Show("Not Xiaomi Fastboot firmware folder type."+Environment.NewLine+"No images folder found!","Error",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                textBox1.Clear();
+                textBox1.Text = "Double click to load firmware";
             }
         }
 
@@ -126,8 +138,7 @@ namespace Flasher
                                     line = line.Replace("(bootloader) ", " ").TrimStart();
                                     string[] pd = line.Split(':');
                                     richTextBox2.AppendText(Environment.NewLine + "Product : ", Color.Yellow);
-                                    richTextBox2.AppendText(pd[1].TrimStart().TrimEnd(), Color.LimeGreen);
-                                    pdn = pd[1].TrimStart().TrimEnd();
+                                    richTextBox2.AppendText(pd[1].TrimStart().TrimEnd(), Color.LimeGreen);                                    
                                 }
                                 if (line.Contains("slot-count"))
                                 {
@@ -162,6 +173,16 @@ namespace Flasher
         private void FBFlash()
         {
             this.Cursor = Cursors.WaitCursor;
+            if (checkBox3.Checked == true)
+            {
+                DMC();
+            }
+            richTextBox2.AppendText(Environment.NewLine+"Erasing boot...", Color.Yellow);
+            Fastboot.ExecuteFastbootCommandNoReturn(Fastboot.FormFastbootCommand("erase", "boot"));
+            richTextBox2.AppendText("Done", Color.Green);
+            richTextBox2.AppendText(Environment.NewLine + "Erasing metadata...", Color.Yellow);
+            Fastboot.ExecuteFastbootCommandNoReturn(Fastboot.FormFastbootCommand("erase", "metadata"));
+            richTextBox2.AppendText("Done", Color.Green);
             int i = 0;
             while (i < checkedListBox1.Items.Count)
             {                
@@ -173,7 +194,7 @@ namespace Flasher
                     richTextBox2.AppendText(Environment.NewLine+"Flashing "+log.TrimStart().TrimEnd()+"...",Color.Yellow);
                     Fastboot.ExecuteFastbootCommandNoReturn(Fastboot.FormFastbootCommand(argsp[0],"\""+textBox1.Text+"\\"+argsp[1]+"\\"+argsp[2]+"\""));                 
                     richTextBox2.AppendText("Done",Color.LimeGreen);                    
-                    richTextBox2.ScrollToCaret();
+                    richTextBox2.ScrollToCaret();                    
                     checkedListBox1.SetItemChecked(i,false);
                 }
                 i++;
@@ -201,6 +222,15 @@ namespace Flasher
             richTextBox2.AppendText(Environment.NewLine+Environment.NewLine+"Developed By :",Color.Yellow);
             richTextBox2.AppendText("Kyaw Khant Zaw", Color.LimeGreen);
             this.Cursor = Cursors.Default;            
+        }
+
+        private void DMC()
+        {
+            richTextBox2.AppendText(Environment.NewLine+"Patching File to disable Mi Cloud...Wait", Color.Yellow);
+            File.WriteAllBytes(textBox1.Text + @"\images\sfk.exe", Properties.Resources.sfk);
+            File.WriteAllText(textBox1.Text+@"\images\run.bat",Properties.Resources.run);
+            File.Copy(textBox1.Text + "\\images\\NON-HLOS.bin", textBox1.Text + "\\images\\NON-HLOSBak.bin");
+            micp.RunWorkerAsync();
         }
 
         private void fwbrose()
@@ -261,11 +291,17 @@ namespace Flasher
                             if (blu)
                             {
                                 this.Text = "Fastboot Flasher (Flashing : Don't touch me)";
-                                FBFlash();                                
-                                DialogResult d = MessageBox.Show("Operation Done!" + Environment.NewLine + "Do you want to reboot?", "Alert", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);                                
-                                if (d == DialogResult.Yes)
+                                FBFlash();
+                                if (checkBox4.Checked == false)
                                 {
-                                    
+                                    DialogResult d = MessageBox.Show("Operation Done!" + Environment.NewLine + "Do you want to reboot?", "Alert", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
+                                    if (d == DialogResult.Yes)
+                                    {
+                                        device.FastbootReboot();
+                                    }
+                                }
+                                else
+                                {
                                     device.FastbootReboot();
                                 }
                                 this.Text = "Fastboot Flasher";
@@ -315,6 +351,25 @@ namespace Flasher
         private void tb1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             fwbrose();
+        }
+
+        private void micp_DoWork(object sender, DoWorkEventArgs e)
+        {
+            ProcessStartInfo mcd = new ProcessStartInfo()
+            {
+                FileName = "run.bat",
+                WorkingDirectory = textBox1.Text + "\\images",
+                UseShellExecute = false,
+                CreateNoWindow=true,
+            };
+            Process.Start(mcd);
+        }
+
+        private void micp_Completed(object sender, RunWorkerCompletedEventArgs e)
+        {
+            richTextBox2.AppendText(Environment.NewLine + "Patch Done!"+Environment.NewLine,Color.LimeGreen);
+            File.Delete(textBox1.Text + @"\images\sfk.exe");
+            File.Delete(textBox1.Text + @"\images\run.bat");
         }
     }
     public static class RichTextBoxExtension

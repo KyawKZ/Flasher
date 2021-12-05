@@ -80,8 +80,11 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <None Include="Resources\fb.cmd" />
+    <None Include="Resources\run.bat" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\sfk.exe" />
+    <None Include="bin\Debug\AndroidLib.dll" />
     <Content Include="R_2.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

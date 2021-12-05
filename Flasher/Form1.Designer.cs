@@ -41,6 +41,9 @@
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.micp = new System.ComponentModel.BackgroundWorker();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // checkedListBox1
@@ -153,7 +156,7 @@
             // 
             this.checkBox2.AutoSize = true;
             this.checkBox2.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox2.Location = new System.Drawing.Point(334, 464);
+            this.checkBox2.Location = new System.Drawing.Point(333, 464);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(158, 18);
             this.checkBox2.TabIndex = 11;
@@ -168,18 +171,47 @@
             this.comboBox1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
-            "Activate Slot A",
-            "Activate Slot B"});
-            this.comboBox1.Location = new System.Drawing.Point(494, 461);
+            "Boot From Slot A",
+            "Boot From Slot B"});
+            this.comboBox1.Location = new System.Drawing.Point(487, 461);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(128, 22);
+            this.comboBox1.Size = new System.Drawing.Size(133, 22);
             this.comboBox1.TabIndex = 12;
+            // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox3.Location = new System.Drawing.Point(7, 489);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(199, 18);
+            this.checkBox3.TabIndex = 13;
+            this.checkBox3.Text = "Disable Mi Cloud(Qualcomm)";
+            this.checkBox3.UseVisualStyleBackColor = true;
+            // 
+            // micp
+            // 
+            this.micp.DoWork += new System.ComponentModel.DoWorkEventHandler(this.micp_DoWork);
+            this.micp.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.micp_Completed);
+            // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox4.Location = new System.Drawing.Point(242, 488);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(107, 18);
+            this.checkBox4.TabIndex = 14;
+            this.checkBox4.Text = "Auto Reboot";
+            this.checkBox4.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(625, 491);
+            this.ClientSize = new System.Drawing.Size(625, 515);
+            this.Controls.Add(this.checkBox4);
+            this.Controls.Add(this.checkBox3);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.checkBox1);
@@ -218,6 +250,9 @@
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.CheckBox checkBox3;
+        private System.ComponentModel.BackgroundWorker micp;
+        private System.Windows.Forms.CheckBox checkBox4;
     }
 }
 
