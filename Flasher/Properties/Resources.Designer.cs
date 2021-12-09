@@ -61,16 +61,6 @@ namespace Flasher.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] AndroidLib {
-            get {
-                object obj = ResourceManager.GetObject("AndroidLib", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to @echo off
         ///fastboot getvar all 2&gt; f.txt.
         /// </summary>

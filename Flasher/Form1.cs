@@ -33,11 +33,7 @@ namespace Flasher
             checkBox2.Checked = false;
             checkBox1.Checked = false;            
             richTextBox2.AppendText("Developed By : ",Color.Yellow);
-            richTextBox2.AppendText("Kyaw Khant Zaw",Color.LimeGreen);
-            if (!File.Exists(Directory.GetCurrentDirectory() + "\\AndroidLib.dll"))
-            {
-                File.WriteAllBytes(Directory.GetCurrentDirectory() + "\\AndroidLib.dll", Properties.Resources.AndroidLib);
-            }
+            richTextBox2.AppendText("Kyaw Khant Zaw",Color.LimeGreen);            
         }
 
         private void ParseFlashBat()
@@ -45,15 +41,16 @@ namespace Flasher
             richTextBox2.Clear();
             checkedListBox1.Items.Clear();
             if (textBox1.Text.Contains("images"))
-            {
+            {                
                 using (StreamReader r = new StreamReader(textBox1.Text + "\\flash_all.bat"))
                 {
                     string line;
                     int i = 0;
                     while ((line = r.ReadLine()) != null)
                     {
-                        if (line.Contains("flash") && !line.Contains("NONE"))
+                        if (line.Contains("flash") && !line.Contains("NONE") && !line.Contains("tool"))
                         {
+                            line = line.Replace("\"", " ");                            
                             string[] ls = line.Split('|');
                             string sf = ls[0].Replace(" %* ", " ");
                             string fs = sf.Replace(" %~dp0", " ");
@@ -69,9 +66,17 @@ namespace Flasher
                             {
                                 fn = fn.Replace("\\", " ");
                             }
-                            string[] final = fn.Split('=');
+                            string[] final = fn.Split('=');                            
                             string cmd = final[0].TrimStart().TrimEnd() + " \\images\\" + final[1].TrimStart().TrimEnd();
-                            checkedListBox1.Items.Add(cmd);
+                            if(cmd.Contains("%~dp0 "))
+                            {
+                                cmd.Replace("%~dp0 ", " ");
+                                checkedListBox1.Items.Add(cmd);
+                            }
+                            else
+                            {
+                                checkedListBox1.Items.Add(cmd);
+                            }                            
                             checkedListBox1.SetItemChecked(i, true);
                             i++;
                         }
@@ -178,11 +183,11 @@ namespace Flasher
                 DMC();
             }
             richTextBox2.AppendText(Environment.NewLine+"Erasing boot...", Color.Yellow);
-            Fastboot.ExecuteFastbootCommandNoReturn(Fastboot.FormFastbootCommand("erase", "boot"));
-            richTextBox2.AppendText("Done", Color.Green);
+            Fastboot.ExecuteFastbootCommandNoReturn(Fastboot.FormFastbootCommand("erase boot"));
+            richTextBox2.AppendText("Done", Color.LimeGreen);
             richTextBox2.AppendText(Environment.NewLine + "Erasing metadata...", Color.Yellow);
-            Fastboot.ExecuteFastbootCommandNoReturn(Fastboot.FormFastbootCommand("erase", "metadata"));
-            richTextBox2.AppendText("Done", Color.Green);
+            Fastboot.ExecuteFastbootCommandNoReturn(Fastboot.FormFastbootCommand("erase metadata"));
+            richTextBox2.AppendText("Done", Color.LimeGreen);
             int i = 0;
             while (i < checkedListBox1.Items.Count)
             {                
