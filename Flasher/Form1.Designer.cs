@@ -44,6 +44,7 @@
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.micp = new System.ComponentModel.BackgroundWorker();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // checkedListBox1
@@ -205,11 +206,23 @@
             this.checkBox4.Text = "Auto Reboot";
             this.checkBox4.UseVisualStyleBackColor = true;
             // 
+            // checkBox5
+            // 
+            this.checkBox5.AutoSize = true;
+            this.checkBox5.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox5.Location = new System.Drawing.Point(369, 488);
+            this.checkBox5.Name = "checkBox5";
+            this.checkBox5.Size = new System.Drawing.Size(87, 18);
+            this.checkBox5.TabIndex = 15;
+            this.checkBox5.Text = "Old Model";
+            this.checkBox5.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(625, 515);
+            this.Controls.Add(this.checkBox5);
             this.Controls.Add(this.checkBox4);
             this.Controls.Add(this.checkBox3);
             this.Controls.Add(this.comboBox1);
@@ -253,6 +266,7 @@
         private System.Windows.Forms.CheckBox checkBox3;
         private System.ComponentModel.BackgroundWorker micp;
         private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.CheckBox checkBox5;
     }
 }
 

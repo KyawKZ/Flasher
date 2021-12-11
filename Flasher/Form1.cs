@@ -127,7 +127,7 @@ namespace Flasher
                                     line = line.Replace("(bootloader) ", " ").TrimStart();
                                     string[] pd = line.Split(':');
                                     richTextBox2.AppendText(Environment.NewLine+"Unlocked : ", Color.Yellow);
-                                    if (pd[1].Contains("yes"))
+                                    if (pd[1].Contains("yes") || checkBox5.Checked==true) 
                                     {
                                         richTextBox2.AppendText(pd[1].TrimStart().TrimEnd().ToUpper(), Color.LimeGreen);
                                         blu = true;
@@ -212,7 +212,7 @@ namespace Flasher
             }
             if (checkBox2.Checked == true)
             {
-                richTextBox2.AppendText(Environment.NewLine + "Setting Active to " + comboBox1.SelectedItem.ToString(), Color.Yellow);
+                richTextBox2.AppendText(Environment.NewLine + "Setting Active to " + comboBox1.SelectedItem.ToString()+"...", Color.Yellow);
                 switch (comboBox1.SelectedIndex)
                 {
                     case 0:
