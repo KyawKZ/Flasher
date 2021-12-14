@@ -206,9 +206,27 @@ namespace Flasher
             }
             if (checkBox1.Checked == true)
             {
-                richTextBox2.AppendText(Environment.NewLine + "Disabling Verified Boot...",Color.Yellow);
-                Fastboot.ExecuteFastbootCommandNoReturn(Fastboot.FormFastbootCommand("--disable-verity --disable-verification flash vbmeta","\""+ textBox1.Text + "\\images\\vbmeta.img"+"\""));
-                richTextBox2.AppendText("Done",Color.LimeGreen);
+                if (checkBox2.Checked == true)
+                {
+                    richTextBox2.AppendText(Environment.NewLine + "Disabling Verified Boot...", Color.Yellow);
+                    switch (comboBox1.SelectedIndex)
+                    {
+                        case 0:
+                            Fastboot.ExecuteFastbootCommandNoReturn(Fastboot.FormFastbootCommand("--disable-verity --disable-verification flash vbmeta_a", "\"" + textBox1.Text + "\\images\\vbmeta.img" + "\""));
+                            richTextBox2.AppendText("Done", Color.LimeGreen);
+                            break;
+                        case 1:
+                            Fastboot.ExecuteFastbootCommandNoReturn(Fastboot.FormFastbootCommand("--disable-verity --disable-verification flash vbmeta_b", "\"" + textBox1.Text + "\\images\\vbmeta.img" + "\""));
+                            richTextBox2.AppendText("Done", Color.LimeGreen);
+                            break;
+                    }                    
+                }
+                else
+                {
+                    richTextBox2.AppendText(Environment.NewLine + "Disabling Verified Boot...", Color.Yellow);
+                    Fastboot.ExecuteFastbootCommandNoReturn(Fastboot.FormFastbootCommand("--disable-verity --disable-verification flash vbmeta", "\"" + textBox1.Text + "\\images\\vbmeta.img" + "\""));
+                    richTextBox2.AppendText("Done", Color.LimeGreen);
+                }
             }
             if (checkBox2.Checked == true)
             {
