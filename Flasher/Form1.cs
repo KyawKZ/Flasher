@@ -177,11 +177,7 @@ namespace Flasher
 
         private void FBFlash()
         {
-            this.Cursor = Cursors.WaitCursor;
-            if (checkBox3.Checked == true)
-            {
-                DMC();
-            }
+            this.Cursor = Cursors.WaitCursor;            
             richTextBox2.AppendText(Environment.NewLine+"Erasing boot...", Color.Yellow);
             Fastboot.ExecuteFastbootCommandNoReturn(Fastboot.FormFastbootCommand("erase boot"));
             richTextBox2.AppendText("Done", Color.LimeGreen);
@@ -241,9 +237,16 @@ namespace Flasher
                         break;
                 }
                 richTextBox2.AppendText("Done", Color.Green);
+            }                      
+            if (checkBox3.Checked == true)
+            {
+                DMC();                
             }
-            richTextBox2.AppendText(Environment.NewLine+Environment.NewLine+"Developed By :",Color.Yellow);
-            richTextBox2.AppendText("Kyaw Khant Zaw", Color.LimeGreen);
+            else
+            {
+                richTextBox2.AppendText(Environment.NewLine + Environment.NewLine + "Developed By :", Color.Yellow);
+                richTextBox2.AppendText("Kyaw Khant Zaw", Color.LimeGreen); 
+            }
             this.Cursor = Cursors.Default;            
         }
 
@@ -393,6 +396,8 @@ namespace Flasher
             richTextBox2.AppendText(Environment.NewLine + "Patch Done!"+Environment.NewLine,Color.LimeGreen);
             File.Delete(textBox1.Text + @"\images\sfk.exe");
             File.Delete(textBox1.Text + @"\images\run.bat");
+            richTextBox2.AppendText(Environment.NewLine + Environment.NewLine + "Developed By :", Color.Yellow);
+            richTextBox2.AppendText("Kyaw Khant Zaw", Color.LimeGreen);
         }
     }
     public static class RichTextBoxExtension
